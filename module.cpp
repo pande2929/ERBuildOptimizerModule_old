@@ -6,7 +6,7 @@
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(er_build_optimizer_module, m) {
+PYBIND11_MODULE(ERBuildOptimizerModule, m) {
 	py::class_<ERBuildOptimizer>(m, "ERBuildOptimizer", py::dynamic_attr())
 		.def(py::init<const int, const bool, const py::dict&>())
 		.def("SetWeapon", &ERBuildOptimizer::SetWeapon)
