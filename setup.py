@@ -5,7 +5,7 @@ import pybind11
 #cpp_args = ['-std=c++11', '-stdlib=libc++', '-mmacosx-version-min=10.7']
 
 bo_module = Pybind11Extension(
-    'er_build_optimizer_module',
+    'ERBuildOptimizerModule',
     sources=['module.cpp', "ERBuildOptimizer.cpp", "SubsetSum.cpp"],
     include_dirs=[pybind11.get_include()],
     language='c++',
@@ -13,10 +13,10 @@ bo_module = Pybind11Extension(
     )
 
 setup(
-    name='er_build_optimizer_module',
-    version='0.6',
-    author="Richard Scales",
-    author_email="richardscales118@gmail.com",
+    name='ERBuildOptimizerModule',
+    version='0.7',
+    author="Morgan Scales",
+    author_email="morganscales118@gmail.com",
     description='Build optimization backend functionality.',
     ext_modules=[bo_module],
     zip_safe=False,
