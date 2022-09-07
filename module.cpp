@@ -7,7 +7,7 @@
 namespace py = pybind11;
 
 PYBIND11_MODULE(er_build_optimizer_module, m) {
-	py::class_<ERBuildOptimizer>(m, "er_build_optimizer", py::dynamic_attr())
+	py::class_<ERBuildOptimizer>(m, "ERBuildOptimizer", py::dynamic_attr())
 		.def(py::init<const int, const bool, const py::dict&>())
 		.def("SetWeapon", &ERBuildOptimizer::SetWeapon)
 		.def_readwrite("mh_weapon", &ERBuildOptimizer::mh_weapon)
@@ -16,7 +16,7 @@ PYBIND11_MODULE(er_build_optimizer_module, m) {
 		.def("Optimize", &ERBuildOptimizer::Optimize)
 		.def_property_readonly("calculation_result", &ERBuildOptimizer::GetCalculationResult);
 
-	py::class_<tarnished>(m, "tarnished_cpp", py::dynamic_attr())
+	py::class_<tarnished>(m, "TarnishedCPP", py::dynamic_attr())
 		.def(py::init<>())
 		.def_readwrite("name", &tarnished::name)
 		.def_readwrite("base_strength", &tarnished::base_strength)
@@ -36,7 +36,7 @@ PYBIND11_MODULE(er_build_optimizer_module, m) {
 		.def_readwrite("opt_faith", &tarnished::opt_faith)
 		.def_readwrite("opt_arcane", &tarnished::opt_arcane);
 
-	py::class_<weapon>(m, "weapon_cpp", py::dynamic_attr())
+	py::class_<weapon>(m, "WeaponCPP", py::dynamic_attr())
 		.def(py::init<>())
 		.def_readwrite("id", &weapon::id)
 		.def_readwrite("name", &weapon::name)
