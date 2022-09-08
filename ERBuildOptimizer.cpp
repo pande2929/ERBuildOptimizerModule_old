@@ -274,9 +274,9 @@ ERBuildOptimizer::ERBuildOptimizer(const int target_level, const bool is_two_han
 
 // Set weapon main hand and off hand weapons
 void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
-    try {
-        Weapon weap;
+    Weapon weap;
 
+    try {
         // convert from dict to weapon
         weap.id = stoi(py::str(w["id"]));
         weap.name = string(py::str(w["name"]));
@@ -289,6 +289,11 @@ void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
         weap.damage_fire = stoi(py::str(w["damage_fire"]));
         weap.damage_lightning = stoi(py::str(w["damage_lightning"]));
         weap.damage_holy = stoi(py::str(w["damage_holy"]));
+
+    }
+    catch(const std::invalid_argument& e) {
+        std::cout << e.what() << endl;
+    }
 
         // Required Stats
         weap.required_str = stoi(py::str(w["required_str"]));
@@ -500,10 +505,6 @@ void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
             oh_weapon = weap;
             dual_wield = true;
         }
-    }
-    catch(const std::invalid_argument& e) {
-        std::cout << e.what() << endl;
-    }
 }
 
 // Get calculation_result
