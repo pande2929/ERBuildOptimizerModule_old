@@ -291,6 +291,8 @@ void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
     weap.damage_lightning = stoi(py::str(w["damage_lightning"]));
     weap.damage_holy = stoi(py::str(w["damage_holy"]));
 
+    std::cout << "Base Damage" << endl;
+
     // Required Stats
     weap.required_str = stoi(py::str(w["required_str"]));
     weap.required_dex = stoi(py::str(w["required_dex"]));
@@ -298,12 +300,16 @@ void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
     weap.required_fai = stoi(py::str(w["required_fai"]));
     weap.required_arc = stoi(py::str(w["required_arc"]));
 
+    std::cout << "Required Stats" << endl;
+
     // Base Correction Values
     weap.correction_str = stoi(py::str(w["correction_str"]));
     weap.correction_dex = stoi(py::str(w["correction_dex"]));
     weap.correction_int = stoi(py::str(w["correction_int"]));
     weap.correction_fai = stoi(py::str(w["correction_fai"]));
     weap.correction_arc = stoi(py::str(w["correction_arc"]));
+
+    std::cout << "Base Correction Values" << endl;
 
     // Bitmask
     weap.attack_element_correct_bitmask_str = string(py::str(w["attack_element_correct_bitmask_str"]));
@@ -326,6 +332,8 @@ void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
     weap.correction_pct_arc = stod(py::str(w["correction_pct_arc"]));
     weap.base_damage_pct_overall = stod(py::str(w["base_damage_pct_overall"]));
 
+    std::cout << "Reinforcement Values" << endl;
+
     // Calc Correct Values
 
     // Physical
@@ -346,6 +354,8 @@ void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
     weap.physical_adjustment_pt_grow_3 = stod(py::str(w["physical_adjustment_pt_grow_3"]));
     weap.physical_adjustment_pt_grow_4 = stod(py::str(w["physical_adjustment_pt_grow_4"]));
 
+    std::cout << "Physical Correction" << endl;
+
     // Magic
     weap.magic_calc_correct_id = stoi(py::str(w["magic_calc_correct_id"]));
     weap.magic_stat_max_0 = stoi(py::str(w["magic_stat_max_0"]));
@@ -363,6 +373,8 @@ void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
     weap.magic_adjustment_pt_grow_2 = stod(py::str(w["magic_adjustment_pt_grow_2"]));
     weap.magic_adjustment_pt_grow_3 = stod(py::str(w["magic_adjustment_pt_grow_3"]));
     weap.magic_adjustment_pt_grow_4 = stod(py::str(w["magic_adjustment_pt_grow_4"]));
+
+    std::cout << "Magic Correction" << endl;
 
     // Fire
     weap.fire_calc_correct_id = stoi(py::str(w["fire_calc_correct_id"]));
@@ -382,6 +394,8 @@ void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
     weap.fire_adjustment_pt_grow_3 = stod(py::str(w["fire_adjustment_pt_grow_3"]));
     weap.fire_adjustment_pt_grow_4 = stod(py::str(w["fire_adjustment_pt_grow_4"]));
 
+    std::cout << "Fire Correction" << endl;
+
     // Lightning
     weap.lightning_calc_correct_id = stoi(py::str(w["lightning_calc_correct_id"]));
     weap.lightning_stat_max_0 = stoi(py::str(w["lightning_stat_max_0"]));
@@ -399,6 +413,8 @@ void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
     weap.lightning_adjustment_pt_grow_2 = stod(py::str(w["lightning_adjustment_pt_grow_2"]));
     weap.lightning_adjustment_pt_grow_3 = stod(py::str(w["lightning_adjustment_pt_grow_3"]));
     weap.lightning_adjustment_pt_grow_4 = stod(py::str(w["lightning_adjustment_pt_grow_4"]));
+
+    std::cout << "Lightning Correction" << endl;
 
     // Holy
     weap.holy_calc_correct_id = stoi(py::str(w["holy_calc_correct_id"]));
@@ -418,6 +434,8 @@ void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
     weap.holy_adjustment_pt_grow_3 = stod(py::str(w["holy_adjustment_pt_grow_3"]));
     weap.holy_adjustment_pt_grow_4 = stod(py::str(w["holy_adjustment_pt_grow_4"]));
 
+    std::cout << "Holy Correction" << endl;
+
     // Poison
     weap.poison_calc_correct_id = stoi(py::str(w["poison_calc_correct_id"]));
     weap.poison_stat_max_0 = stoi(py::str(w["poison_stat_max_0"]));
@@ -436,6 +454,8 @@ void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
     weap.poison_adjustment_pt_grow_3 = stod(py::str(w["poison_adjustment_pt_grow_3"]));
     weap.poison_adjustment_pt_grow_4 = stod(py::str(w["poison_adjustment_pt_grow_4"]));
 
+    std::cout << "Poison Correction" << endl;
+
     // Bleed
     weap.bleed_calc_correct_id = stoi(py::str(w["bleed_calc_correct_id"]));
     weap.bleed_stat_max_0 = stoi(py::str(w["bleed_stat_max_0"]));
@@ -453,6 +473,8 @@ void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
     weap.bleed_adjustment_pt_grow_2 = stod(py::str(w["bleed_adjustment_pt_grow_2"]));
     weap.bleed_adjustment_pt_grow_3 = stod(py::str(w["bleed_adjustment_pt_grow_3"]));
     weap.bleed_adjustment_pt_grow_4 = stod(py::str(w["bleed_adjustment_pt_grow_4"]));
+
+    std::cout << "Bleed Correction" << endl;
 
     // Passives
 
@@ -479,6 +501,8 @@ void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
     weap.pass3_frost = stoi(py::str(w["pass3_frost"]));
     weap.pass3_sleep = stoi(py::str(w["pass3_sleep"]));
     weap.pass3_madness = stoi(py::str(w["pass3_madness"]));
+
+    std::cout << "Passives" << endl;
 
     // Maximized Values(will be needed by the template for display)
     weap.max_physical_dmg = stod(py::str(w["max_physical_dmg"]));
