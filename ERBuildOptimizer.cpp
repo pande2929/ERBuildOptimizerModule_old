@@ -325,10 +325,7 @@ void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
         weap.correction_pct_arc = stod(py::str(w["correction_pct_arc"]));
         weap.base_damage_pct_overall = stod(py::str(w["base_damage_pct_overall"]));
 
-    }
-    catch(const std::invalid_argument& e) {
-        std::cout << e.what() << endl;
-    }
+
 
         // Calc Correct Values
 
@@ -349,6 +346,11 @@ void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
         weap.physical_adjustment_pt_grow_2 = stod(py::str(w["physical_adjustment_pt_grow_2"]));
         weap.physical_adjustment_pt_grow_3 = stod(py::str(w["physical_adjustment_pt_grow_3"]));
         weap.physical_adjustment_pt_grow_4 = stod(py::str(w["physical_adjustment_pt_grow_4"]));
+
+    }
+    catch(const std::invalid_argument& e) {
+        std::cout << e.what() << endl;
+    }
 
         // Magic
         weap.magic_calc_correct_id = stoi(py::str(w["magic_calc_correct_id"]));
