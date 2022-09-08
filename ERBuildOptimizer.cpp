@@ -263,8 +263,6 @@ ERBuildOptimizer::ERBuildOptimizer(const int target_level, const bool is_two_han
     optimal_character.opt_intelligence = stoi(string(py::str(character["opt_intelligence"])));
     optimal_character.opt_faith = stoi(string(py::str(character["opt_faith"])));
     optimal_character.opt_arcane = stoi(string(py::str(character["opt_arcane"])));
-
-    std::cout << "ERBuildOptimizer::ERBuildOptimizer" << endl;
 }
 
 // Non-python typed Constructor
@@ -276,258 +274,236 @@ ERBuildOptimizer::ERBuildOptimizer(const int target_level, const bool is_two_han
 
 // Set weapon main hand and off hand weapons
 void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
-    Weapon weap;
+    try {
+        Weapon weap;
 
-    // convert from dict to weapon
-    weap.id = stoi(py::str(w["id"]));
-    weap.name = string(py::str(w["name"]));
-    weap.weapon_type = string(py::str(w["weapon_type"]));
-    weap.origin_weapon = string(py::str(w["origin_weapon"]));
+        // convert from dict to weapon
+        weap.id = stoi(py::str(w["id"]));
+        weap.name = string(py::str(w["name"]));
+        weap.weapon_type = string(py::str(w["weapon_type"]));
+        weap.origin_weapon = string(py::str(w["origin_weapon"]));
 
-    // Base Damage
-    weap.damage_physical = stoi(py::str(w["damage_physical"]));
-    weap.damage_magic = stoi(py::str(w["damage_magic"]));
-    weap.damage_fire = stoi(py::str(w["damage_fire"]));
-    weap.damage_lightning = stoi(py::str(w["damage_lightning"]));
-    weap.damage_holy = stoi(py::str(w["damage_holy"]));
+        // Base Damage
+        weap.damage_physical = stoi(py::str(w["damage_physical"]));
+        weap.damage_magic = stoi(py::str(w["damage_magic"]));
+        weap.damage_fire = stoi(py::str(w["damage_fire"]));
+        weap.damage_lightning = stoi(py::str(w["damage_lightning"]));
+        weap.damage_holy = stoi(py::str(w["damage_holy"]));
 
-    std::cout << "Base Damage" << endl;
+        // Required Stats
+        weap.required_str = stoi(py::str(w["required_str"]));
+        weap.required_dex = stoi(py::str(w["required_dex"]));
+        weap.required_int = stoi(py::str(w["required_int"]));
+        weap.required_fai = stoi(py::str(w["required_fai"]));
+        weap.required_arc = stoi(py::str(w["required_arc"]));
 
-    // Required Stats
-    weap.required_str = stoi(py::str(w["required_str"]));
-    weap.required_dex = stoi(py::str(w["required_dex"]));
-    weap.required_int = stoi(py::str(w["required_int"]));
-    weap.required_fai = stoi(py::str(w["required_fai"]));
-    weap.required_arc = stoi(py::str(w["required_arc"]));
+        // Base Correction Values
+        weap.correction_str = stoi(py::str(w["correction_str"]));
+        weap.correction_dex = stoi(py::str(w["correction_dex"]));
+        weap.correction_int = stoi(py::str(w["correction_int"]));
+        weap.correction_fai = stoi(py::str(w["correction_fai"]));
+        weap.correction_arc = stoi(py::str(w["correction_arc"]));
 
-    std::cout << "Required Stats" << endl;
+        // Bitmask
+        weap.attack_element_correct_bitmask_str = string(py::str(w["attack_element_correct_bitmask_str"]));
 
-    // Base Correction Values
-    weap.correction_str = stoi(py::str(w["correction_str"]));
-    weap.correction_dex = stoi(py::str(w["correction_dex"]));
-    weap.correction_int = stoi(py::str(w["correction_int"]));
-    weap.correction_fai = stoi(py::str(w["correction_fai"]));
-    weap.correction_arc = stoi(py::str(w["correction_arc"]));
+        // Convert the string attack element correct bitmask into an integer one
+        weap.attack_element_correct_bitmask = ConvertBitMask(weap.attack_element_correct_bitmask_str);
 
-    std::cout << "Base Correction Values" << endl;
+        // Reinforcement Values
+        weap.damage_pct_physical = stod(py::str(w["damage_pct_physical"]));
+        weap.damage_pct_magic = stod(py::str(w["damage_pct_magic"]));
+        weap.damage_pct_fire = stod(py::str(w["damage_pct_fire"]));
+        weap.damage_pct_lightning = stod(py::str(w["damage_pct_lightning"]));
+        weap.damage_pct_holy = stod(py::str(w["damage_pct_holy"]));
+        weap.damage_pct_stamina = stod(py::str(w["damage_pct_stamina"]));
+        weap.damage_pct_poise = stod(py::str(w["damage_pct_poise"]));
+        weap.correction_pct_str = stod(py::str(w["correction_pct_str"]));
+        weap.correction_pct_dex = stod(py::str(w["correction_pct_dex"]));
+        weap.correction_pct_int = stod(py::str(w["correction_pct_int"]));
+        weap.correction_pct_fai = stod(py::str(w["correction_pct_fai"]));
+        weap.correction_pct_arc = stod(py::str(w["correction_pct_arc"]));
+        weap.base_damage_pct_overall = stod(py::str(w["base_damage_pct_overall"]));
 
-    // Bitmask
-    weap.attack_element_correct_bitmask_str = string(py::str(w["attack_element_correct_bitmask_str"]));
-    
-    // Convert the string attack element correct bitmask into an integer one 
-    weap.attack_element_correct_bitmask = ConvertBitMask(weap.attack_element_correct_bitmask_str);    
+        // Calc Correct Values
 
-    // Reinforcement Values
-    weap.damage_pct_physical = stod(py::str(w["damage_pct_physical"]));
-    weap.damage_pct_magic = stod(py::str(w["damage_pct_magic"]));
-    weap.damage_pct_fire = stod(py::str(w["damage_pct_fire"]));
-    weap.damage_pct_lightning = stod(py::str(w["damage_pct_lightning"]));
-    weap.damage_pct_holy = stod(py::str(w["damage_pct_holy"]));
-    weap.damage_pct_stamina = stod(py::str(w["damage_pct_stamina"]));
-    weap.damage_pct_poise = stod(py::str(w["damage_pct_poise"]));
-    weap.correction_pct_str = stod(py::str(w["correction_pct_str"]));
-    weap.correction_pct_dex = stod(py::str(w["correction_pct_dex"]));
-    weap.correction_pct_int = stod(py::str(w["correction_pct_int"]));
-    weap.correction_pct_fai = stod(py::str(w["correction_pct_fai"]));
-    weap.correction_pct_arc = stod(py::str(w["correction_pct_arc"]));
-    weap.base_damage_pct_overall = stod(py::str(w["base_damage_pct_overall"]));
+        // Physical
+        weap.physical_calc_correct_id = stoi(py::str(w["physical_calc_correct_id"]));
+        weap.physical_stat_max_0 = stoi(py::str(w["physical_stat_max_0"]));
+        weap.physical_stat_max_1 = stoi(py::str(w["physical_stat_max_1"]));
+        weap.physical_stat_max_2 = stoi(py::str(w["physical_stat_max_2"]));
+        weap.physical_stat_max_3 = stoi(py::str(w["physical_stat_max_3"]));
+        weap.physical_stat_max_4 = stoi(py::str(w["physical_stat_max_4"]));
+        weap.physical_grow_0 = stoi(py::str(w["physical_grow_0"]));
+        weap.physical_grow_1 = stoi(py::str(w["physical_grow_1"]));
+        weap.physical_grow_2 = stoi(py::str(w["physical_grow_2"]));
+        weap.physical_grow_3 = stoi(py::str(w["physical_grow_3"]));
+        weap.physical_grow_4 = stoi(py::str(w["physical_grow_4"]));
+        weap.physical_adjustment_pt_grow_0 = stod(py::str(w["physical_adjustment_pt_grow_0"]));
+        weap.physical_adjustment_pt_grow_1 = stod(py::str(w["physical_adjustment_pt_grow_1"]));
+        weap.physical_adjustment_pt_grow_2 = stod(py::str(w["physical_adjustment_pt_grow_2"]));
+        weap.physical_adjustment_pt_grow_3 = stod(py::str(w["physical_adjustment_pt_grow_3"]));
+        weap.physical_adjustment_pt_grow_4 = stod(py::str(w["physical_adjustment_pt_grow_4"]));
 
-    std::cout << "Reinforcement Values" << endl;
+        // Magic
+        weap.magic_calc_correct_id = stoi(py::str(w["magic_calc_correct_id"]));
+        weap.magic_stat_max_0 = stoi(py::str(w["magic_stat_max_0"]));
+        weap.magic_stat_max_1 = stoi(py::str(w["magic_stat_max_1"]));
+        weap.magic_stat_max_2 = stoi(py::str(w["magic_stat_max_2"]));
+        weap.magic_stat_max_3 = stoi(py::str(w["magic_stat_max_3"]));
+        weap.magic_stat_max_4 = stoi(py::str(w["magic_stat_max_4"]));
+        weap.magic_grow_0 = stoi(py::str(w["magic_grow_0"]));
+        weap.magic_grow_1 = stoi(py::str(w["magic_grow_1"]));
+        weap.magic_grow_2 = stoi(py::str(w["magic_grow_2"]));
+        weap.magic_grow_3 = stoi(py::str(w["magic_grow_3"]));
+        weap.magic_grow_4 = stoi(py::str(w["magic_grow_4"]));
+        weap.magic_adjustment_pt_grow_0 = stod(py::str(w["magic_adjustment_pt_grow_0"]));
+        weap.magic_adjustment_pt_grow_1 = stod(py::str(w["magic_adjustment_pt_grow_1"]));
+        weap.magic_adjustment_pt_grow_2 = stod(py::str(w["magic_adjustment_pt_grow_2"]));
+        weap.magic_adjustment_pt_grow_3 = stod(py::str(w["magic_adjustment_pt_grow_3"]));
+        weap.magic_adjustment_pt_grow_4 = stod(py::str(w["magic_adjustment_pt_grow_4"]));
 
-    // Calc Correct Values
+        // Fire
+        weap.fire_calc_correct_id = stoi(py::str(w["fire_calc_correct_id"]));
+        weap.fire_stat_max_0 = stoi(py::str(w["fire_stat_max_0"]));
+        weap.fire_stat_max_1 = stoi(py::str(w["fire_stat_max_1"]));
+        weap.fire_stat_max_2 = stoi(py::str(w["fire_stat_max_2"]));
+        weap.fire_stat_max_3 = stoi(py::str(w["fire_stat_max_3"]));
+        weap.fire_stat_max_4 = stoi(py::str(w["fire_stat_max_4"]));
+        weap.fire_grow_0 = stoi(py::str(w["fire_grow_0"]));
+        weap.fire_grow_1 = stoi(py::str(w["fire_grow_1"]));
+        weap.fire_grow_2 = stoi(py::str(w["fire_grow_2"]));
+        weap.fire_grow_3 = stoi(py::str(w["fire_grow_3"]));
+        weap.fire_grow_4 = stoi(py::str(w["fire_grow_4"]));
+        weap.fire_adjustment_pt_grow_0 = stod(py::str(w["fire_adjustment_pt_grow_0"]));
+        weap.fire_adjustment_pt_grow_1 = stod(py::str(w["fire_adjustment_pt_grow_1"]));
+        weap.fire_adjustment_pt_grow_2 = stod(py::str(w["fire_adjustment_pt_grow_2"]));
+        weap.fire_adjustment_pt_grow_3 = stod(py::str(w["fire_adjustment_pt_grow_3"]));
+        weap.fire_adjustment_pt_grow_4 = stod(py::str(w["fire_adjustment_pt_grow_4"]));
 
-    // Physical
-    weap.physical_calc_correct_id = stoi(py::str(w["physical_calc_correct_id"]));
-    weap.physical_stat_max_0 = stoi(py::str(w["physical_stat_max_0"]));
-    weap.physical_stat_max_1 = stoi(py::str(w["physical_stat_max_1"]));
-    weap.physical_stat_max_2 = stoi(py::str(w["physical_stat_max_2"]));
-    weap.physical_stat_max_3 = stoi(py::str(w["physical_stat_max_3"]));
-    weap.physical_stat_max_4 = stoi(py::str(w["physical_stat_max_4"]));
-    weap.physical_grow_0 = stoi(py::str(w["physical_grow_0"]));
-    weap.physical_grow_1 = stoi(py::str(w["physical_grow_1"]));
-    weap.physical_grow_2 = stoi(py::str(w["physical_grow_2"]));
-    weap.physical_grow_3 = stoi(py::str(w["physical_grow_3"]));
-    weap.physical_grow_4 = stoi(py::str(w["physical_grow_4"]));
-    weap.physical_adjustment_pt_grow_0 = stod(py::str(w["physical_adjustment_pt_grow_0"]));
-    weap.physical_adjustment_pt_grow_1 = stod(py::str(w["physical_adjustment_pt_grow_1"]));
-    weap.physical_adjustment_pt_grow_2 = stod(py::str(w["physical_adjustment_pt_grow_2"]));
-    weap.physical_adjustment_pt_grow_3 = stod(py::str(w["physical_adjustment_pt_grow_3"]));
-    weap.physical_adjustment_pt_grow_4 = stod(py::str(w["physical_adjustment_pt_grow_4"]));
+        // Lightning
+        weap.lightning_calc_correct_id = stoi(py::str(w["lightning_calc_correct_id"]));
+        weap.lightning_stat_max_0 = stoi(py::str(w["lightning_stat_max_0"]));
+        weap.lightning_stat_max_1 = stoi(py::str(w["lightning_stat_max_1"]));
+        weap.lightning_stat_max_2 = stoi(py::str(w["lightning_stat_max_2"]));
+        weap.lightning_stat_max_3 = stoi(py::str(w["lightning_stat_max_3"]));
+        weap.lightning_stat_max_4 = stoi(py::str(w["lightning_stat_max_4"]));
+        weap.lightning_grow_0 = stoi(py::str(w["lightning_grow_0"]));
+        weap.lightning_grow_1 = stoi(py::str(w["lightning_grow_1"]));
+        weap.lightning_grow_2 = stoi(py::str(w["lightning_grow_2"]));
+        weap.lightning_grow_3 = stoi(py::str(w["lightning_grow_3"]));
+        weap.lightning_grow_4 = stoi(py::str(w["lightning_grow_4"]));
+        weap.lightning_adjustment_pt_grow_0 = stod(py::str(w["lightning_adjustment_pt_grow_0"]));
+        weap.lightning_adjustment_pt_grow_1 = stod(py::str(w["lightning_adjustment_pt_grow_1"]));
+        weap.lightning_adjustment_pt_grow_2 = stod(py::str(w["lightning_adjustment_pt_grow_2"]));
+        weap.lightning_adjustment_pt_grow_3 = stod(py::str(w["lightning_adjustment_pt_grow_3"]));
+        weap.lightning_adjustment_pt_grow_4 = stod(py::str(w["lightning_adjustment_pt_grow_4"]));
 
-    std::cout << "Physical Correction" << endl;
+        // Holy
+        weap.holy_calc_correct_id = stoi(py::str(w["holy_calc_correct_id"]));
+        weap.holy_stat_max_0 = stoi(py::str(w["holy_stat_max_0"]));
+        weap.holy_stat_max_1 = stoi(py::str(w["holy_stat_max_1"]));
+        weap.holy_stat_max_2 = stoi(py::str(w["holy_stat_max_2"]));
+        weap.holy_stat_max_3 = stoi(py::str(w["holy_stat_max_3"]));
+        weap.holy_stat_max_4 = stoi(py::str(w["holy_stat_max_4"]));
+        weap.holy_grow_0 = stoi(py::str(w["holy_grow_0"]));
+        weap.holy_grow_1 = stoi(py::str(w["holy_grow_1"]));
+        weap.holy_grow_2 = stoi(py::str(w["holy_grow_2"]));
+        weap.holy_grow_3 = stoi(py::str(w["holy_grow_3"]));
+        weap.holy_grow_4 = stoi(py::str(w["holy_grow_4"]));
+        weap.holy_adjustment_pt_grow_0 = stod(py::str(w["holy_adjustment_pt_grow_0"]));
+        weap.holy_adjustment_pt_grow_1 = stod(py::str(w["holy_adjustment_pt_grow_1"]));
+        weap.holy_adjustment_pt_grow_2 = stod(py::str(w["holy_adjustment_pt_grow_2"]));
+        weap.holy_adjustment_pt_grow_3 = stod(py::str(w["holy_adjustment_pt_grow_3"]));
+        weap.holy_adjustment_pt_grow_4 = stod(py::str(w["holy_adjustment_pt_grow_4"]));
 
-    // Magic
-    weap.magic_calc_correct_id = stoi(py::str(w["magic_calc_correct_id"]));
-    weap.magic_stat_max_0 = stoi(py::str(w["magic_stat_max_0"]));
-    weap.magic_stat_max_1 = stoi(py::str(w["magic_stat_max_1"]));
-    weap.magic_stat_max_2 = stoi(py::str(w["magic_stat_max_2"]));
-    weap.magic_stat_max_3 = stoi(py::str(w["magic_stat_max_3"]));
-    weap.magic_stat_max_4 = stoi(py::str(w["magic_stat_max_4"]));
-    weap.magic_grow_0 = stoi(py::str(w["magic_grow_0"]));
-    weap.magic_grow_1 = stoi(py::str(w["magic_grow_1"]));
-    weap.magic_grow_2 = stoi(py::str(w["magic_grow_2"]));
-    weap.magic_grow_3 = stoi(py::str(w["magic_grow_3"]));
-    weap.magic_grow_4 = stoi(py::str(w["magic_grow_4"]));
-    weap.magic_adjustment_pt_grow_0 = stod(py::str(w["magic_adjustment_pt_grow_0"]));
-    weap.magic_adjustment_pt_grow_1 = stod(py::str(w["magic_adjustment_pt_grow_1"]));
-    weap.magic_adjustment_pt_grow_2 = stod(py::str(w["magic_adjustment_pt_grow_2"]));
-    weap.magic_adjustment_pt_grow_3 = stod(py::str(w["magic_adjustment_pt_grow_3"]));
-    weap.magic_adjustment_pt_grow_4 = stod(py::str(w["magic_adjustment_pt_grow_4"]));
+        // Poison
+        weap.poison_calc_correct_id = stoi(py::str(w["poison_calc_correct_id"]));
+        weap.poison_stat_max_0 = stoi(py::str(w["poison_stat_max_0"]));
+        weap.poison_stat_max_1 = stoi(py::str(w["poison_stat_max_1"]));
+        weap.poison_stat_max_2 = stoi(py::str(w["poison_stat_max_2"]));
+        weap.poison_stat_max_3 = stoi(py::str(w["poison_stat_max_3"]));
+        weap.poison_stat_max_4 = stoi(py::str(w["poison_stat_max_4"]));
+        weap.poison_grow_0 = stoi(py::str(w["poison_grow_0"]));
+        weap.poison_grow_1 = stoi(py::str(w["poison_grow_1"]));
+        weap.poison_grow_2 = stoi(py::str(w["poison_grow_2"]));
+        weap.poison_grow_3 = stoi(py::str(w["poison_grow_3"]));
+        weap.poison_grow_4 = stoi(py::str(w["poison_grow_4"]));
+        weap.poison_adjustment_pt_grow_0 = stod(py::str(w["poison_adjustment_pt_grow_0"]));
+        weap.poison_adjustment_pt_grow_1 = stod(py::str(w["poison_adjustment_pt_grow_1"]));
+        weap.poison_adjustment_pt_grow_2 = stod(py::str(w["poison_adjustment_pt_grow_2"]));
+        weap.poison_adjustment_pt_grow_3 = stod(py::str(w["poison_adjustment_pt_grow_3"]));
+        weap.poison_adjustment_pt_grow_4 = stod(py::str(w["poison_adjustment_pt_grow_4"]));
 
-    std::cout << "Magic Correction" << endl;
+        // Bleed
+        weap.bleed_calc_correct_id = stoi(py::str(w["bleed_calc_correct_id"]));
+        weap.bleed_stat_max_0 = stoi(py::str(w["bleed_stat_max_0"]));
+        weap.bleed_stat_max_1 = stoi(py::str(w["bleed_stat_max_1"]));
+        weap.bleed_stat_max_2 = stoi(py::str(w["bleed_stat_max_2"]));
+        weap.bleed_stat_max_3 = stoi(py::str(w["bleed_stat_max_3"]));
+        weap.bleed_stat_max_4 = stoi(py::str(w["bleed_stat_max_4"]));
+        weap.bleed_grow_0 = stoi(py::str(w["bleed_grow_0"]));
+        weap.bleed_grow_1 = stoi(py::str(w["bleed_grow_1"]));
+        weap.bleed_grow_2 = stoi(py::str(w["bleed_grow_2"]));
+        weap.bleed_grow_3 = stoi(py::str(w["bleed_grow_3"]));
+        weap.bleed_grow_4 = stoi(py::str(w["bleed_grow_4"]));
+        weap.bleed_adjustment_pt_grow_0 = stod(py::str(w["bleed_adjustment_pt_grow_0"]));
+        weap.bleed_adjustment_pt_grow_1 = stod(py::str(w["bleed_adjustment_pt_grow_1"]));
+        weap.bleed_adjustment_pt_grow_2 = stod(py::str(w["bleed_adjustment_pt_grow_2"]));
+        weap.bleed_adjustment_pt_grow_3 = stod(py::str(w["bleed_adjustment_pt_grow_3"]));
+        weap.bleed_adjustment_pt_grow_4 = stod(py::str(w["bleed_adjustment_pt_grow_4"]));
 
-    // Fire
-    weap.fire_calc_correct_id = stoi(py::str(w["fire_calc_correct_id"]));
-    weap.fire_stat_max_0 = stoi(py::str(w["fire_stat_max_0"]));
-    weap.fire_stat_max_1 = stoi(py::str(w["fire_stat_max_1"]));
-    weap.fire_stat_max_2 = stoi(py::str(w["fire_stat_max_2"]));
-    weap.fire_stat_max_3 = stoi(py::str(w["fire_stat_max_3"]));
-    weap.fire_stat_max_4 = stoi(py::str(w["fire_stat_max_4"]));
-    weap.fire_grow_0 = stoi(py::str(w["fire_grow_0"]));
-    weap.fire_grow_1 = stoi(py::str(w["fire_grow_1"]));
-    weap.fire_grow_2 = stoi(py::str(w["fire_grow_2"]));
-    weap.fire_grow_3 = stoi(py::str(w["fire_grow_3"]));
-    weap.fire_grow_4 = stoi(py::str(w["fire_grow_4"]));
-    weap.fire_adjustment_pt_grow_0 = stod(py::str(w["fire_adjustment_pt_grow_0"]));
-    weap.fire_adjustment_pt_grow_1 = stod(py::str(w["fire_adjustment_pt_grow_1"]));
-    weap.fire_adjustment_pt_grow_2 = stod(py::str(w["fire_adjustment_pt_grow_2"]));
-    weap.fire_adjustment_pt_grow_3 = stod(py::str(w["fire_adjustment_pt_grow_3"]));
-    weap.fire_adjustment_pt_grow_4 = stod(py::str(w["fire_adjustment_pt_grow_4"]));
+        // Passives
 
-    std::cout << "Fire Correction" << endl;
+        weap.pass1_poison = stoi(py::str(w["pass1_poison"]));
+        weap.pass1_scarlet_rot = stoi(py::str(w["pass1_scarlet_rot"]));
+        weap.pass1_bleed = stoi(py::str(w["pass1_bleed"]));
+        weap.pass1_death = stoi(py::str(w["pass1_death"]));
+        weap.pass1_frost = stoi(py::str(w["pass1_frost"]));
+        weap.pass1_sleep = stoi(py::str(w["pass1_sleep"]));
+        weap.pass1_madness = stoi(py::str(w["pass1_madness"]));
 
-    // Lightning
-    weap.lightning_calc_correct_id = stoi(py::str(w["lightning_calc_correct_id"]));
-    weap.lightning_stat_max_0 = stoi(py::str(w["lightning_stat_max_0"]));
-    weap.lightning_stat_max_1 = stoi(py::str(w["lightning_stat_max_1"]));
-    weap.lightning_stat_max_2 = stoi(py::str(w["lightning_stat_max_2"]));
-    weap.lightning_stat_max_3 = stoi(py::str(w["lightning_stat_max_3"]));
-    weap.lightning_stat_max_4 = stoi(py::str(w["lightning_stat_max_4"]));
-    weap.lightning_grow_0 = stoi(py::str(w["lightning_grow_0"]));
-    weap.lightning_grow_1 = stoi(py::str(w["lightning_grow_1"]));
-    weap.lightning_grow_2 = stoi(py::str(w["lightning_grow_2"]));
-    weap.lightning_grow_3 = stoi(py::str(w["lightning_grow_3"]));
-    weap.lightning_grow_4 = stoi(py::str(w["lightning_grow_4"]));
-    weap.lightning_adjustment_pt_grow_0 = stod(py::str(w["lightning_adjustment_pt_grow_0"]));
-    weap.lightning_adjustment_pt_grow_1 = stod(py::str(w["lightning_adjustment_pt_grow_1"]));
-    weap.lightning_adjustment_pt_grow_2 = stod(py::str(w["lightning_adjustment_pt_grow_2"]));
-    weap.lightning_adjustment_pt_grow_3 = stod(py::str(w["lightning_adjustment_pt_grow_3"]));
-    weap.lightning_adjustment_pt_grow_4 = stod(py::str(w["lightning_adjustment_pt_grow_4"]));
+        weap.pass2_poison = stoi(py::str(w["pass2_poison"]));
+        weap.pass2_scarlet_rot = stoi(py::str(w["pass2_scarlet_rot"]));
+        weap.pass2_bleed = stoi(py::str(w["pass2_bleed"]));
+        weap.pass2_death = stoi(py::str(w["pass2_death"]));
+        weap.pass2_frost = stoi(py::str(w["pass2_frost"]));
+        weap.pass2_sleep = stoi(py::str(w["pass2_sleep"]));
+        weap.pass2_madness = stoi(py::str(w["pass2_madness"]));
 
-    std::cout << "Lightning Correction" << endl;
+        weap.pass3_poison = stoi(py::str(w["pass3_poison"]));
+        weap.pass3_scarlet_rot = stoi(py::str(w["pass3_scarlet_rot"]));
+        weap.pass3_bleed = stoi(py::str(w["pass3_bleed"]));
+        weap.pass3_death = stoi(py::str(w["pass3_death"]));
+        weap.pass3_frost = stoi(py::str(w["pass3_frost"]));
+        weap.pass3_sleep = stoi(py::str(w["pass3_sleep"]));
+        weap.pass3_madness = stoi(py::str(w["pass3_madness"]));
 
-    // Holy
-    weap.holy_calc_correct_id = stoi(py::str(w["holy_calc_correct_id"]));
-    weap.holy_stat_max_0 = stoi(py::str(w["holy_stat_max_0"]));
-    weap.holy_stat_max_1 = stoi(py::str(w["holy_stat_max_1"]));
-    weap.holy_stat_max_2 = stoi(py::str(w["holy_stat_max_2"]));
-    weap.holy_stat_max_3 = stoi(py::str(w["holy_stat_max_3"]));
-    weap.holy_stat_max_4 = stoi(py::str(w["holy_stat_max_4"]));
-    weap.holy_grow_0 = stoi(py::str(w["holy_grow_0"]));
-    weap.holy_grow_1 = stoi(py::str(w["holy_grow_1"]));
-    weap.holy_grow_2 = stoi(py::str(w["holy_grow_2"]));
-    weap.holy_grow_3 = stoi(py::str(w["holy_grow_3"]));
-    weap.holy_grow_4 = stoi(py::str(w["holy_grow_4"]));
-    weap.holy_adjustment_pt_grow_0 = stod(py::str(w["holy_adjustment_pt_grow_0"]));
-    weap.holy_adjustment_pt_grow_1 = stod(py::str(w["holy_adjustment_pt_grow_1"]));
-    weap.holy_adjustment_pt_grow_2 = stod(py::str(w["holy_adjustment_pt_grow_2"]));
-    weap.holy_adjustment_pt_grow_3 = stod(py::str(w["holy_adjustment_pt_grow_3"]));
-    weap.holy_adjustment_pt_grow_4 = stod(py::str(w["holy_adjustment_pt_grow_4"]));
+        // Maximized Values(will be needed by the template for display)
+        weap.max_physical_dmg = stod(py::str(w["max_physical_dmg"]));
+        weap.max_magic_dmg = stod(py::str(w["max_magic_dmg"]));
+        weap.max_fire_dmg = stod(py::str(w["max_fire_dmg"]));
+        weap.max_lightning_dmg = stod(py::str(w["max_lightning_dmg"]));
+        weap.max_holy_dmg = stod(py::str(w["max_holy_dmg"]));
+        weap.max_total_dmg = stod(py::str(w["max_total_dmg"]));
 
-    std::cout << "Holy Correction" << endl;
+        weap.max_poison = stod(py::str(w["max_poison"]));
+        weap.max_bleed = stod(py::str(w["max_bleed"]));
+        weap.max_frostbite = stod(py::str(w["max_frostbite"]));
+        weap.max_sleep = stod(py::str(w["max_sleep"]));
+        weap.max_madness = stod(py::str(w["max_madness"]));
+        weap.max_scarlet_rot = stod(py::str(w["max_scarlet_rot"]));
 
-    // Poison
-    weap.poison_calc_correct_id = stoi(py::str(w["poison_calc_correct_id"]));
-    weap.poison_stat_max_0 = stoi(py::str(w["poison_stat_max_0"]));
-    weap.poison_stat_max_1 = stoi(py::str(w["poison_stat_max_1"]));
-    weap.poison_stat_max_2 = stoi(py::str(w["poison_stat_max_2"]));
-    weap.poison_stat_max_3 = stoi(py::str(w["poison_stat_max_3"]));
-    weap.poison_stat_max_4 = stoi(py::str(w["poison_stat_max_4"]));
-    weap.poison_grow_0 = stoi(py::str(w["poison_grow_0"]));
-    weap.poison_grow_1 = stoi(py::str(w["poison_grow_1"]));
-    weap.poison_grow_2 = stoi(py::str(w["poison_grow_2"]));
-    weap.poison_grow_3 = stoi(py::str(w["poison_grow_3"]));
-    weap.poison_grow_4 = stoi(py::str(w["poison_grow_4"]));
-    weap.poison_adjustment_pt_grow_0 = stod(py::str(w["poison_adjustment_pt_grow_0"]));
-    weap.poison_adjustment_pt_grow_1 = stod(py::str(w["poison_adjustment_pt_grow_1"]));
-    weap.poison_adjustment_pt_grow_2 = stod(py::str(w["poison_adjustment_pt_grow_2"]));
-    weap.poison_adjustment_pt_grow_3 = stod(py::str(w["poison_adjustment_pt_grow_3"]));
-    weap.poison_adjustment_pt_grow_4 = stod(py::str(w["poison_adjustment_pt_grow_4"]));
-
-    std::cout << "Poison Correction" << endl;
-
-    // Bleed
-    weap.bleed_calc_correct_id = stoi(py::str(w["bleed_calc_correct_id"]));
-    weap.bleed_stat_max_0 = stoi(py::str(w["bleed_stat_max_0"]));
-    weap.bleed_stat_max_1 = stoi(py::str(w["bleed_stat_max_1"]));
-    weap.bleed_stat_max_2 = stoi(py::str(w["bleed_stat_max_2"]));
-    weap.bleed_stat_max_3 = stoi(py::str(w["bleed_stat_max_3"]));
-    weap.bleed_stat_max_4 = stoi(py::str(w["bleed_stat_max_4"]));
-    weap.bleed_grow_0 = stoi(py::str(w["bleed_grow_0"]));
-    weap.bleed_grow_1 = stoi(py::str(w["bleed_grow_1"]));
-    weap.bleed_grow_2 = stoi(py::str(w["bleed_grow_2"]));
-    weap.bleed_grow_3 = stoi(py::str(w["bleed_grow_3"]));
-    weap.bleed_grow_4 = stoi(py::str(w["bleed_grow_4"]));
-    weap.bleed_adjustment_pt_grow_0 = stod(py::str(w["bleed_adjustment_pt_grow_0"]));
-    weap.bleed_adjustment_pt_grow_1 = stod(py::str(w["bleed_adjustment_pt_grow_1"]));
-    weap.bleed_adjustment_pt_grow_2 = stod(py::str(w["bleed_adjustment_pt_grow_2"]));
-    weap.bleed_adjustment_pt_grow_3 = stod(py::str(w["bleed_adjustment_pt_grow_3"]));
-    weap.bleed_adjustment_pt_grow_4 = stod(py::str(w["bleed_adjustment_pt_grow_4"]));
-
-    std::cout << "Bleed Correction" << endl;
-
-    // Passives
-
-    weap.pass1_poison = stoi(py::str(w["pass1_poison"]));
-    weap.pass1_scarlet_rot = stoi(py::str(w["pass1_scarlet_rot"]));
-    weap.pass1_bleed = stoi(py::str(w["pass1_bleed"]));
-    weap.pass1_death = stoi(py::str(w["pass1_death"]));
-    weap.pass1_frost = stoi(py::str(w["pass1_frost"]));
-    weap.pass1_sleep = stoi(py::str(w["pass1_sleep"]));
-    weap.pass1_madness = stoi(py::str(w["pass1_madness"]));
-
-    weap.pass2_poison = stoi(py::str(w["pass2_poison"]));
-    weap.pass2_scarlet_rot = stoi(py::str(w["pass2_scarlet_rot"]));
-    weap.pass2_bleed = stoi(py::str(w["pass2_bleed"]));
-    weap.pass2_death = stoi(py::str(w["pass2_death"]));
-    weap.pass2_frost = stoi(py::str(w["pass2_frost"]));
-    weap.pass2_sleep = stoi(py::str(w["pass2_sleep"]));
-    weap.pass2_madness = stoi(py::str(w["pass2_madness"]));
-
-    weap.pass3_poison = stoi(py::str(w["pass3_poison"]));
-    weap.pass3_scarlet_rot = stoi(py::str(w["pass3_scarlet_rot"]));
-    weap.pass3_bleed = stoi(py::str(w["pass3_bleed"]));
-    weap.pass3_death = stoi(py::str(w["pass3_death"]));
-    weap.pass3_frost = stoi(py::str(w["pass3_frost"]));
-    weap.pass3_sleep = stoi(py::str(w["pass3_sleep"]));
-    weap.pass3_madness = stoi(py::str(w["pass3_madness"]));
-
-    std::cout << "Passives" << endl;
-
-    // Maximized Values(will be needed by the template for display)
-    weap.max_physical_dmg = stod(py::str(w["max_physical_dmg"]));
-    weap.max_magic_dmg = stod(py::str(w["max_magic_dmg"]));
-    weap.max_fire_dmg = stod(py::str(w["max_fire_dmg"]));
-    weap.max_lightning_dmg = stod(py::str(w["max_lightning_dmg"]));
-    weap.max_holy_dmg = stod(py::str(w["max_holy_dmg"]));
-    weap.max_total_dmg = stod(py::str(w["max_total_dmg"]));
-
-    weap.max_poison = stod(py::str(w["max_poison"]));
-    weap.max_bleed = stod(py::str(w["max_bleed"]));
-    weap.max_frostbite = stod(py::str(w["max_frostbite"]));
-    weap.max_sleep = stod(py::str(w["max_sleep"]));
-    weap.max_madness = stod(py::str(w["max_madness"]));
-    weap.max_scarlet_rot = stod(py::str(w["max_scarlet_rot"]));
-
-    if (main_hand) {
-        mh_weapon = weap;
+        if (main_hand) {
+            mh_weapon = weap;
+        } else {
+            oh_weapon = weap;
+            dual_wield = true;
+        }
     }
-    else {
-        oh_weapon = weap;
-        dual_wield = true;
+    catch(const std::exception& e) {
+        std::cout << e.what() << endl;
     }
-
-    std::cout << "ERBuildOptimizer::SetWeapon" << endl;
 }
 
 // Get calculation_result
