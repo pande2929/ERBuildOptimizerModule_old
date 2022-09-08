@@ -456,11 +456,6 @@ void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
         weap.bleed_adjustment_pt_grow_3 = stod(py::str(w["bleed_adjustment_pt_grow_3"]));
         weap.bleed_adjustment_pt_grow_4 = stod(py::str(w["bleed_adjustment_pt_grow_4"]));
 
-    }
-    catch(const std::invalid_argument& e) {
-        std::cout << e.what() << endl;
-    }
-
         // Passives
 
         weap.pass1_poison = stoi(py::str(w["pass1_poison"]));
@@ -470,6 +465,11 @@ void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
         weap.pass1_frost = stoi(py::str(w["pass1_frost"]));
         weap.pass1_sleep = stoi(py::str(w["pass1_sleep"]));
         weap.pass1_madness = stoi(py::str(w["pass1_madness"]));
+
+    }
+    catch(const std::invalid_argument& e) {
+        std::cout << e.what() << endl;
+    }
 
         weap.pass2_poison = stoi(py::str(w["pass2_poison"]));
         weap.pass2_scarlet_rot = stoi(py::str(w["pass2_scarlet_rot"]));
