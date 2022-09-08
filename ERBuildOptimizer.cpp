@@ -475,16 +475,23 @@ void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
         weap.pass2_madness = stoi(py::str(w["pass2_madness"]));
 
         weap.pass3_poison = stoi(py::str(w["pass3_poison"]));
+        std::cout <<  "pass3_poison" << endl;
         weap.pass3_scarlet_rot = stoi(py::str(w["pass3_scarlet_rot"]));
+        std::cout <<  "pass3_scarlet_rot" << endl;
         weap.pass3_bleed = stoi(py::str(w["pass3_bleed"]));
+        std::cout <<  "pass3_bleed" << endl;
         weap.pass3_death = stoi(py::str(w["pass3_death"]));
+        std::cout <<  "pass3_death" << endl;
         weap.pass3_frost = stoi(py::str(w["pass3_frost"]));
+        std::cout <<  "pass3_frost" << endl;
         weap.pass3_sleep = stoi(py::str(w["pass3_sleep"]));
+        std::cout <<  "pass3_sleep" << endl;
         weap.pass3_madness = stoi(py::str(w["pass3_madness"]));
+        std::cout <<  "pass3_madness" << endl;
 
     }
     catch(const std::invalid_argument& e) {
-        std::cout << e.what() << endl;
+        std::cout << "FUCK" << endl;
     }
 
         // Maximized Values(will be needed by the template for display)
