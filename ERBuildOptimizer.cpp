@@ -501,7 +501,7 @@ void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
             dual_wield = true;
         }
     }
-    catch(const std::exception& e) {
+    catch(const std::invalid_argument& e) {
         std::cout << e.what() << endl;
     }
 }
