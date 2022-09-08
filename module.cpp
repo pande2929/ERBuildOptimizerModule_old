@@ -40,7 +40,7 @@ PYBIND11_MODULE(ERBuildOptimizerModule, m) {
 		.def(py::init<>())
 		.def_readwrite("id", &Weapon::id)
 		.def_readwrite("name", &Weapon::name)
-		.def_readwrite("Weapon_type", &Weapon::weapon_type)
+		.def_readwrite("weapon_type", &Weapon::weapon_type)
 		.def_readwrite("origin_Weapon", &Weapon::origin_weapon)
 		.def_readwrite("damage_physical", &Weapon::damage_physical)
 		.def_readwrite("damage_magic", &Weapon::damage_magic)
