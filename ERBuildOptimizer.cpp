@@ -290,11 +290,6 @@ void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
         weap.damage_lightning = stoi(py::str(w["damage_lightning"]));
         weap.damage_holy = stoi(py::str(w["damage_holy"]));
 
-    }
-    catch(const std::invalid_argument& e) {
-        std::cout << e.what() << endl;
-    }
-
         // Required Stats
         weap.required_str = stoi(py::str(w["required_str"]));
         weap.required_dex = stoi(py::str(w["required_dex"]));
@@ -329,6 +324,11 @@ void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
         weap.correction_pct_fai = stod(py::str(w["correction_pct_fai"]));
         weap.correction_pct_arc = stod(py::str(w["correction_pct_arc"]));
         weap.base_damage_pct_overall = stod(py::str(w["base_damage_pct_overall"]));
+
+    }
+    catch(const std::invalid_argument& e) {
+        std::cout << e.what() << endl;
+    }
 
         // Calc Correct Values
 
