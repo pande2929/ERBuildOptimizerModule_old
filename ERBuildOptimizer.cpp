@@ -1,12 +1,13 @@
 #include "ERBuildOptimizer.h"
 #include "SubsetSum.h"
 #include <vector>
+#include <iostream>
 #include <algorithm>
 
 using namespace std;
 
 // Populate passive status effects. Poison and bleed usually scale with ARC, but all others only scale with stones.
-void ERBuildOptimizer::UpdatePassives(weapon& selected_weapon) {
+void ERBuildOptimizer::UpdatePassives(Weapon& selected_weapon) {
     // Bleed Scaling
     if (selected_weapon.pass1_bleed > 0) {
         selected_weapon.max_bleed = CalculatePassive(
@@ -262,10 +263,12 @@ ERBuildOptimizer::ERBuildOptimizer(const int target_level, const bool is_two_han
     optimal_character.opt_intelligence = stoi(string(py::str(character["opt_intelligence"])));
     optimal_character.opt_faith = stoi(string(py::str(character["opt_faith"])));
     optimal_character.opt_arcane = stoi(string(py::str(character["opt_arcane"])));
+
+    std::cout << "ERBuildOptimizer::ERBuildOptimizer" << endl;
 }
 
 // Non-python typed Constructor
-ERBuildOptimizer::ERBuildOptimizer(const int target_level, const bool is_two_handing, const tarnished & character) {
+ERBuildOptimizer::ERBuildOptimizer(const int target_level, const bool is_two_handing, const Tarnished & character) {
     this->target_level = target_level;
     this->is_two_handing = is_two_handing;
     optimal_character = character;
@@ -273,7 +276,7 @@ ERBuildOptimizer::ERBuildOptimizer(const int target_level, const bool is_two_han
 
 // Set weapon main hand and off hand weapons
 void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
-    weapon weap;
+    Weapon weap;
 
     // convert from dict to weapon
     weap.id = stoi(py::str(w["id"]));
@@ -499,6 +502,8 @@ void ERBuildOptimizer::SetWeapon(const bool main_hand, const py::dict & w) {
         oh_weapon = weap;
         dual_wield = true;
     }
+
+    std::cout << "ERBuildOptimizer::SetWeapon" << endl;
 }
 
 // Get calculation_result
@@ -720,7 +725,7 @@ void ERBuildOptimizer::EvaluateSolutionSet(const int s, const int d, const int i
 }
 
 // Calculate corrected damage
-double ERBuildOptimizer::CalculateCorrectedDamage(const weapon & selected_weapon, const int s, const int d, const int i, const int f, const int a, const DAMAGE_TYPE damage_type) const {
+double ERBuildOptimizer::CalculateCorrectedDamage(const Weapon & selected_weapon, const int s, const int d, const int i, const int f, const int a, const DAMAGE_TYPE damage_type) const {
     double base_damage = 0.0;
 
     int mask = 0;

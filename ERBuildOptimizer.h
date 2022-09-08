@@ -69,28 +69,28 @@ private:
     double highest_damage = 0;
     int calculation_result = CALC_PROCEED;
 
-    void UpdatePassives(weapon & selected_weapon);
+    void UpdatePassives(Weapon & selected_weapon);
     double CalculatePassive(const int base, const int correction_arc, const double correction_pct_arc,
         const int stat_max_0, const int stat_max_1, const int stat_max_2, const int stat_max_3, const int stat_max_4,
         const int grow_0, const int grow_1, const int grow_2, const int grow_3, const int grow_4,
         const double adj_pt_grow_0, const double adj_pt_grow_1, const double adj_pt_grow_2, const double adj_pt_grow_3, const double adj_pt_grow_4) const;
     int Validate(const int min_max[][2]) const;
     void EvaluateSolutionSet(const int s, const int d, const int i, const int f, const int a);
-    double CalculateCorrectedDamage(const weapon& selected_weapon, const int s, const int d, const int i, const int f, const int a, const DAMAGE_TYPE damage_type) const;
+    double CalculateCorrectedDamage(const Weapon& selected_weapon, const int s, const int d, const int i, const int f, const int a, const DAMAGE_TYPE damage_type) const;
     inline double CalculateCorrectFn(const double attribute, const int stat_max[], const int grow[], const double adj_pt_grow[]) const;
     inline double CalcCorrectFnInner(const double attribute, const int stat_max, const int stat_max_n, const int grow, const int grow_n, const double adj_grow) const;
     inline int ConvertBitMask(const std::string mask) const;
 
 public:
-    ERBuildOptimizer(const int target_level, const bool is_two_handing, const tarnished & character);
+    ERBuildOptimizer(const int target_level, const bool is_two_handing, const Tarnished & character);
     ERBuildOptimizer(const int target_level, const bool is_two_handing, const py::dict & character);
     void SetWeapon(const bool main_hand, const py::dict & w);
     void Optimize();
     int GetCalculationResult();
 
-    tarnished optimal_character;
-    weapon mh_weapon;
-    weapon oh_weapon;
+    Tarnished optimal_character;
+    Weapon mh_weapon;
+    Weapon oh_weapon;
 };
 
 #endif // !BUILD_OPTIMIZER_H

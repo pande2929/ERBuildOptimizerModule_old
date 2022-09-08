@@ -5,10 +5,10 @@
 
 using namespace std;
 
-// tarnished model
-struct tarnished {
+// Tarnished model
+struct Tarnished {
 	// Default constructor
-	tarnished() {}
+	Tarnished() {}
 
 	// Base attributes
 	string name = "";
@@ -35,9 +35,9 @@ struct tarnished {
 };
 
 // weapon model
-struct weapon {
+struct Weapon {
 	// Default constructor
-	weapon() {}
+	Weapon() {}
 
 	int id = 0;
 	string name = "";
