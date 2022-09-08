@@ -10,8 +10,8 @@ PYBIND11_MODULE(ERBuildOptimizerModule, m) {
 	py::class_<ERBuildOptimizer>(m, "ERBuildOptimizer", py::dynamic_attr())
 		.def(py::init<const int, const bool, const py::dict&>())
 		.def("SetWeapon", &ERBuildOptimizer::SetWeapon)
-		.def_readwrite("mh_Weapon", &ERBuildOptimizer::mh_weapon)
-		.def_readwrite("oh_Weapon", &ERBuildOptimizer::oh_weapon)
+		.def_readwrite("mh_weapon", &ERBuildOptimizer::mh_weapon)
+		.def_readwrite("oh_weapon", &ERBuildOptimizer::oh_weapon)
 		.def_readwrite("optimal_character", &ERBuildOptimizer::optimal_character)
 		.def("Optimize", &ERBuildOptimizer::Optimize)
 		.def_property_readonly("calculation_result", &ERBuildOptimizer::GetCalculationResult);
